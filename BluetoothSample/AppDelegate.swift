@@ -7,15 +7,36 @@
 //
 
 import UIKit
+import SwiftyBeaver
+
+
+let log: SwiftyBeaver.Type? = {
+    print("log")
+    #if DEBUG
+        let logger = SwiftyBeaver.self
+        let console = ConsoleDestination()
+        console.asynchronously = false
+        let file = FileDestination()
+        logger.addDestination(console) // コンソールにログを出力する
+        //            logger.addDestination(file)    // ファイルにログを出力する
+        
+        return logger
+    #else
+        return nil
+    #endif
+}()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+//    let log = SwiftyBeaver.self
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        print("didFinishLaunch")
         return true
     }
 
