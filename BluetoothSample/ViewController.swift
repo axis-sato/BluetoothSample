@@ -7,21 +7,34 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class ViewController: UIViewController {
+    var centralManager: CBCentralManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        log?.debug("foo")
-        log?.info("bar")
+        
+        centralManager = CBCentralManager(delegate: self, queue: nil)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func didTapStartScan(_ sender: Any) {
+        log?.debug("start scan")
+        centralManager.scanForPeripherals(withServices: nil, options: nil)
     }
-
-
+    
+    @IBAction func didTapStopScan(_ sender: Any) {
+        log?.debug("stop scan")
+        centralManager.stopScan()
+    }
 }
 
+extension ViewController: CBCentralManagerDelegate {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        log?.debug(central.state)
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        log?.debug(peripheral)
+    }
+}

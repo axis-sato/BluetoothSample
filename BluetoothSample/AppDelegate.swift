@@ -11,7 +11,6 @@ import SwiftyBeaver
 
 
 let log: SwiftyBeaver.Type? = {
-    print("log")
     #if DEBUG
         let logger = SwiftyBeaver.self
         let console = ConsoleDestination()
